@@ -24,11 +24,6 @@ var _helpersChildrenPropType = require('../helpers/childrenPropType');
 
 var _helpersChildrenPropType2 = _interopRequireDefault(_helpersChildrenPropType);
 
-// Determine if a node from event.target is a Tab element
-function isTabNode(node) {
-  return node.nodeName === 'LI' && node.getAttribute('role') === 'tab';
-}
-
 // Determine if a tab node is disabled
 function isTabDisabled(node) {
   return node.getAttribute('aria-disabled') === 'true';
@@ -89,7 +84,7 @@ module.exports = _react2['default'].createClass({
   handleClick: function handleClick(e) {
     var node = e.target;
     do {
-      if (isTabNode(node)) {
+      if (this.isTabNode(node)) {
         if (isTabDisabled(node)) {
           return;
         }
@@ -102,7 +97,7 @@ module.exports = _react2['default'].createClass({
   },
 
   handleKeyDown: function handleKeyDown(e) {
-    if (isTabNode(e.target)) {
+    if (this.isTabNode(e.target)) {
       var index = this.state.selectedIndex;
       var preventDefault = false;
 
@@ -125,6 +120,11 @@ module.exports = _react2['default'].createClass({
 
       this.setSelected(index, true);
     }
+  },
+
+  // Determine if a node from event.target is a Tab element
+  isTabNode: function isTabNode(node) {
+    return node.nodeName === 'LI' && node.getAttribute('role') === 'tab' && node.parentElement.parentElement === (0, _reactDom.findDOMNode)(this);
   },
 
   setSelected: function setSelected(index, focus) {
